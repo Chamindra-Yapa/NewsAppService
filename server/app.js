@@ -31,13 +31,14 @@ cloudinary.config({
 //     database: 'newsdb',
 //     insecureAuth:true
 // });
-const connection=mysql.createConnection({
-    host: 'localhost',
-    port: '3306',
-    user: 'root',
-    password: 'chk197',
-    database: 'newsdb'
-});
+// const connection=mysql.createConnection({
+//     host: 'localhost',
+//     port: '3306',
+//     user: 'root',
+//     password: 'chk197',
+//     database: 'newsdb'
+// });
+const connection = mysql.createConnection(process.env.JAWSDB_URL);
 try {
     connection.connect((err) => {
            if (err) console.log(err);
