@@ -36,10 +36,16 @@ module.exports = {
             }
         }
         else {
-            const imagesrc=base64_encode(image);
+            if (image) {
+                const imagesrc=base64_encode(image);
             const query = "INSERT INTO `advertisement` (`description`,`createdBy`,`url`,`image`) VALUES (?,?,?,?);"; // query database to get all the players
             const LOAD_FILE = { toSqlString: function() { return `0x${imagesrc}`; } };
             sql = mysql.format(query, [description,createdBy,url,LOAD_FILE]);
+            }
+            else{
+                const query = "INSERT INTO `advertisement` (`description`,`createdBy`,`url`,`image`) VALUES (?,?,?,?);"; // query database to get all the players
+                 sql = mysql.format(query, [description,createdBy,url,null]);
+            }
          }
             console.log(sql);
             console.log('...req start...');
