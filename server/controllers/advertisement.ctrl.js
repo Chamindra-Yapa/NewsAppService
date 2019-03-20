@@ -8,6 +8,12 @@ const mysql = require('mysql');
 module.exports = {
     addAds: (req, res, next) => {
          // function to encode file data to base64 encoded string
+          console.log('...req start...');
+            console.log(req);
+            console.log('...req end...');
+            console.log('...res start...');
+            console.log(res);
+            console.log('...res end...');
          
         function base64_encode(file) {
             var bitmap = fs.readFileSync(file);
