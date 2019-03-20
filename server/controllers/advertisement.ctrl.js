@@ -79,16 +79,10 @@ module.exports = {
          
         connection.query(query, (err, result) => {
             if (err) {
-                 res.send(JSON.stringify(sql));
-                         res.send(JSON.stringify(req));
-                         res.send(JSON.stringify(res));
-                         res.send(JSON.stringify(err));
+                console.log(err);
                 res.redirect('/');
             }
-             res.send(JSON.stringify(sql));
-            res.send(JSON.stringify(req));
-            res.send(JSON.stringify(res));
-            res.send(JSON.stringify(err));
+             
             res.send(result);
         });
     },
