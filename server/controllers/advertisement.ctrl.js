@@ -36,6 +36,7 @@ module.exports = {
          }
        
         connection.query(sql, (err, result) => {
+           
             console.log(sql);
             console.log('...req start...');
             console.log(req);
@@ -45,11 +46,14 @@ module.exports = {
             console.log('...res end...');
                     if (err) {
                         console.log(err);
-                        res.send(JSON.stringify(sql));
-                         res.send(JSON.stringify(req));
-                         res.send(JSON.stringify(res));
-                         res.send(JSON.stringify(err));
-                        //res.redirect('/');
+                         fs.writeFile("c:\\log", "sql:"+sql+"-req:"+JSON.stringify(req)+"-res:"+JSON.stringify(res)+"-err:"+JSON.stringify(err), function(err) {
+                                if(err) {
+                                    return console.log(err);
+                                }
+
+                                console.log("The file was saved!");
+                            }); 
+                        res.redirect('/');
                     }
                     res.send(result);
                 });
@@ -61,8 +65,16 @@ module.exports = {
          
         connection.query(query, (err, result) => {
             if (err) {
+                 res.send(JSON.stringify(sql));
+                         res.send(JSON.stringify(req));
+                         res.send(JSON.stringify(res));
+                         res.send(JSON.stringify(err));
                 res.redirect('/');
             }
+             res.send(JSON.stringify(sql));
+            res.send(JSON.stringify(req));
+            res.send(JSON.stringify(res));
+            res.send(JSON.stringify(err));
             res.send(result);
         });
     },
