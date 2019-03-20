@@ -8,26 +8,14 @@ const mysql = require('mysql');
 module.exports = {
     addAds: (req, res, next) => {
          // function to encode file data to base64 encoded string
-         fs.writeFile("c:\\log", "-req:"+JSON.stringify(req)+"-res:"+JSON.stringify(res), function(err) {
-                                if(err) {
-                                    return console.log(err);
-                                }
-
-                                console.log("The file was saved!");
-                            }); 
+         
         function base64_encode(file) {
             var bitmap = fs.readFileSync(file);
             return  bitmap.toString('hex');
         }
        
         let {description,createdBy,url,image,id} = req.body;
-       fs.writeFile("c:\\log", "-req:"+JSON.stringify(req)+"-res:"+JSON.stringify(res), function(err) {
-                                if(err) {
-                                    return console.log(err);
-                                }
-
-                                console.log("The file was saved!");
-                            }); 
+      
         let sql;
          if (id!=0){ 
             if (image) {
@@ -47,13 +35,13 @@ module.exports = {
             const LOAD_FILE = { toSqlString: function() { return `0x${imagesrc}`; } };
             sql = mysql.format(query, [description,createdBy,url,LOAD_FILE]);
          }
-         fs.writeFile("c:\\log","sql:"+sql+ "-req:"+JSON.stringify(req)+"-res:"+JSON.stringify(res), function(err) {
-                                if(err) {
-                                    return console.log(err);
-                                }
-
-                                console.log("The file was saved!");
-                            }); 
+            console.log(sql);
+            console.log('...req start...');
+            console.log(req);
+            console.log('...req end...');
+            console.log('...res start...');
+            console.log(res);
+            console.log('...res end...');
        
         connection.query(sql, (err, result) => {
            
@@ -66,22 +54,9 @@ module.exports = {
             console.log('...res end...');
                     if (err) {
                         console.log(err);
-                         fs.writeFile("c:\\log", "sql:"+sql+"-req:"+JSON.stringify(req)+"-res:"+JSON.stringify(res)+"-err:"+JSON.stringify(err), function(err) {
-                                if(err) {
-                                    return console.log(err);
-                                }
-
-                                console.log("The file was saved!");
-                            }); 
-                        res.redirect('/');
+                         res.redirect('/');
                     }
-                    fs.writeFile("c:\\log", "sql:"+sql+"-req:"+JSON.stringify(req)+"-res:"+JSON.stringify(res)+"-err:"+JSON.stringify(err), function(err) {
-                                if(err) {
-                                    return console.log(err);
-                                }
-
-                                console.log("The file was saved!");
-                            }); 
+                    
                     res.send(result);
                 });
         },
