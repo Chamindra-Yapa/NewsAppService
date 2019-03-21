@@ -3,7 +3,16 @@
 const fs = require('fs')
 const cloudinary = require('cloudinary')
 const mysql = require('mysql');
+const axios=require('axios');
 
+const url ="http://localhost:5000/api/"
+
+function getImageData (_id) {
+    console.log(`${url}news/${_id}`);
+     return axios.get(`${url}news/${_id}`).then((res)=>{
+        return res.data;
+    }).catch(err=>console.log(err));
+}
 
 module.exports = {
     addAds: (req, res, next) => {
@@ -15,62 +24,77 @@ module.exports = {
             console.log(res);
             console.log('...res end...');
          
-        function base64_encode(file) {
-            var bitmap = fs.readFileSync(file);
-            return  bitmap.toString('hex');
-        }
-       
-        let {description,createdBy,url,image,id} = req.body;
-      
-        let sql;
-         if (id!=0){ 
+       let {description,createdBy,url,image,id} = req.body;
+       let sql;
+        if (id!=0){ 
             if (image) {
-                let imagesrc=base64_encode(image);
-                let query = "UPDATE `advertisement` set `description`=?,`createdBy`=?,`url`=?,`image`=? where id=?;"; // query database to get all the players
-                let LOAD_FILE = { toSqlString: function() { return `0x${imagesrc}`; } };
-                sql = mysql.format(query, [description,createdBy,url,LOAD_FILE,id]);
+                getImageData(image).then(data => {
+                if (data) {
+
+                     let query = "UPDATE `advertisement` set `description`=?,`createdBy`=?,`url`=?,`image`=? where id=?;"; // query database to get all the players
+                    let LOAD_FILE = { toSqlString: function() { return `0x${data}`; } };
+                    sql = mysql.format(query, [description,createdBy,url,LOAD_FILE,id]);
+                      connection.query(sql, (err, result) => {
+                            console.log(sql);
+                                if (err) {
+                                        console.log(err);
+                                        res.redirect('/');
+                                    }
+                                    res.send(result);
+                                });
+                
+                }   
+                
+                });
+                  
             }
             else {
                  let query = "UPDATE `advertisement` set `description`=?,`createdBy`=?,`url`=? where id=?;"; // query database to get all the players
                  sql = mysql.format(query, [description,createdBy,url,id]);
+                   connection.query(sql, (err, result) => {
+            console.log(sql);
+                if (err) {
+                        console.log(err);
+                        res.redirect('/');
+                    }
+                    res.send(result);
+                });
             }
         }
         else {
             if (image) {
-                const imagesrc=base64_encode(image);
-            const query = "INSERT INTO `advertisement` (`description`,`createdBy`,`url`,`image`) VALUES (?,?,?,?);"; // query database to get all the players
-            const LOAD_FILE = { toSqlString: function() { return `0x${imagesrc}`; } };
-            sql = mysql.format(query, [description,createdBy,url,LOAD_FILE]);
-            }
-            else{
-                const query = "INSERT INTO `advertisement` (`description`,`createdBy`,`url`,`image`) VALUES (?,?,?,?);"; // query database to get all the players
-                 sql = mysql.format(query, [description,createdBy,url,null]);
-            }
+                getImageData(image).then(data => {
+                if (data) {
+                    const query = "INSERT INTO `advertisement` (`description`,`createdBy`,`url`,`image`) VALUES (?,?,?,?);"; // query database to get all the players
+                    const LOAD_FILE = { toSqlString: function() { return `0x${data}`; } };
+                    sql = mysql.format(query, [description,createdBy,url,LOAD_FILE]);
+                      connection.query(sql, (err, result) => {
+                    console.log(sql);
+                        if (err) {
+                                console.log(err);
+                                res.redirect('/');
+                            }
+                            res.send(result);
+                        });
+                        }   
+                        
+                });
+                   
          }
+         else {
+                  const query = "INSERT INTO `advertisement` (`description`,`createdBy`,`url`) VALUES (?,?,?);"; // query database to get all the players
+                 sql = mysql.format(query, [description,createdBy,url]);
+                   connection.query(sql, (err, result) => {
             console.log(sql);
-            console.log('...req start...');
-            console.log(req);
-            console.log('...req end...');
-            console.log('...res start...');
-            console.log(res);
-            console.log('...res end...');
-       
-        connection.query(sql, (err, result) => {
-           
-            console.log(sql);
-            console.log('...req start...');
-            console.log(req);
-            console.log('...req end...');
-            console.log('...res start...');
-            console.log(res);
-            console.log('...res end...');
-                    if (err) {
+                if (err) {
                         console.log(err);
-                         res.redirect('/');
+                        res.redirect('/');
                     }
-                    
                     res.send(result);
                 });
+            }
+        }
+      
         },
 
        
