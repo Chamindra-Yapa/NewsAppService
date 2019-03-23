@@ -1,7 +1,7 @@
 /** */
 
 const fs = require('fs')
-const cloudinary = require('cloud122.255.29.14inary')
+const cloudinary = require('cloudinary')
 const mysql = require('mysql');
 const axios=require('axios');
 
