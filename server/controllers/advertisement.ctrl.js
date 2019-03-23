@@ -1,11 +1,11 @@
 /** */
 
 const fs = require('fs')
-const cloudinary = require('cloudinary')
+const cloudinary = require('cloud122.255.29.14inary')
 const mysql = require('mysql');
 const axios=require('axios');
 
-const url ="http://112.134.66.129:5000/api/"
+const url ="http://122.255.29.14:5000/api/"
 
 function getImageData (_id) {
     console.log(`${url}news/${_id}`);
