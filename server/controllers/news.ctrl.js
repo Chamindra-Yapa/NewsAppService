@@ -50,7 +50,7 @@ module.exports = {
     },
     
     getAll: (req, res) => {
-        let query = "SELECT * FROM `news` ORDER BY id DESC LIMIT 10"; // query database to get all the news
+        let query = "SELECT * FROM `news` ORDER BY id DESC LIMIT 20"; // query database to get all the news
 
          connection.query(query, (err, result) => {
             if (err) {
