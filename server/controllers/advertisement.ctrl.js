@@ -5,7 +5,7 @@ const cloudinary = require('cloudinary')
 const mysql = require('mysql');
 const axios=require('axios');
 
-const url ="http://122.255.29.14:5000/api/"
+const url ="http://localhost:8000/api/"
 
 function getImageData (_id) {
     console.log(`${url}news/${_id}`);
